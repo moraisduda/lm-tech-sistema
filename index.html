@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#e50914">
+    <title>LM TECH</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div id="loginScreen" class="login-screen">
+    <div class="login-box">
+        <div class="login-logo">LM <span>TECH</span></div>
+        <p class="login-subtitle">Sistema de gestão</p>
+
+        <form id="loginForm">
+            <div class="field">
+                <label for="loginUser">Usuário</label>
+                <input id="loginUser" type="text" autocomplete="username" placeholder="Digite seu usuário" required>
+            </div>
+
+            <div class="field">
+                <label for="loginPassword">Senha</label>
+                <input id="loginPassword" type="password" autocomplete="current-password" placeholder="Digite sua senha" required>
+            </div>
+
+            <button class="btn btn-primary btn-full" type="submit">Entrar</button>
+
+            <div class="login-hint">
+                Usuário inicial: <strong>admin</strong> · Senha: <strong>1234</strong>
+            </div>
+
+            <div id="loginError" class="form-error"></div>
+        </form>
+    </div>
+</div>
+
+
+<div id="app" class="app hidden">
+
+    <aside id="sidebar" class="sidebar">
+
+        <div class="sidebar-header">
+            <div class="logo">LM <span>TECH</span></div>
+
+            <button id="closeSidebar" class="icon-button mobile-only" type="button">
+                ×
+            </button>
+        </div>
+
+        <nav class="sidebar-menu">
+
+            <button class="nav-item active" data-page="dashboard">
+                <span>⌂</span>
+                Dashboard
+            </button>
+
+            <button class="nav-item" data-page="vendas">
+                <span>▣</span>
+                Vendas
+            </button>
+
+            <button class="nav-item" data-page="produtos">
+                <span>□</span>
+                Produtos
+            </button>
+
+            <button class="nav-item" data-page="estoque">
+                <span>▤</span>
+                Estoque
+            </button>
+
+            <button class="nav-item" data-page="caixa">
+                <span>R$</span>
+                Caixa
+            </button>
+
+            <button class="nav-item" data-page="historico">
+                <span>↶</span>
+                Histórico
+            </button>
+
+            <button class="nav-item" data-page="relatorios">
+                <span>▥</span>
+                Relatórios
+            </button>
+
+            <button class="nav-item" data-page="configuracoes">
+                <span>⚙</span>
+                Configurações
+            </button>
+
+        </nav>
+
+        <div class="sidebar-footer">
+            <button id="logoutButton" class="nav-item logout" type="button">
+                <span>↪</span>
+                Sair
+            </button>
+        </div>
+
+    </aside>
+
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+
+    <div class="main">
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+                <button id="openSidebar" class="icon-button mobile-menu" type="button">
+                    ☰
+                </button>
+
+                <div>
+                    <div id="topPageTitle" class="top-page-title">Dashboard</div>
+                    <div id="topPageSubtitle" class="top-page-subtitle">
+                        Visão geral do sistema
+                    </div>
+                </div>
+            </div>
+
+            <div class="top-user">
+                <div class="top-user-text">
+                    <strong id="currentUserName">Administrador</strong>
+                    <small>Administrador</small>
+                </div>
+
+                <div id="currentUserAvatar" class="avatar">A</div>
+            </div>
+
+        </header>
+
+
+        <main class="content">
+
+            <!-- DASHBOARD -->
+            <section id="page-dashboard" class="page active">
+
+                <div class="page-heading">
+                    <div>
+                        <h1>Dashboard</h1>
+                        <p>Resumo do seu negócio.</p>
+                    </div>
+
+                    <button class="btn btn-primary" data-go-page="vendas">
+                        Nova venda
+                    </button>
+                </div>
+
+                <div class="cards-grid">
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span>Total vendido hoje</span>
+                            <b class="stat-icon red">R$</b>
+                        </div>
+                        <strong id="dashSales">R$ 0,00</strong>
+                        <small>Vendas concluídas hoje</small>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span>Vendas hoje</span>
+                            <b class="stat-icon">▣</b>
+                        </div>
+                        <strong id="dashOrders">0</strong>
+                        <small>Vendas concluídas</small>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span>Ticket médio</span>
+                            <b class="stat-icon">↗</b>
+                        </div>
+                        <strong id="dashAverage">R$ 0,00</strong>
+                        <small>Valor médio por venda</small>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span>Estoque baixo</span>
+                            <b class="stat-icon warning">!</b>
+                        </div>
+                        <strong id="dashLowStock">0</strong>
+                        <small>Produtos precisam de atenção</small>
+                    </div>
+
+                </div>
+
+
+                <div class="dashboard-grid">
+
+                    <div class="panel">
+                        <div class="panel-header">
+                            <div>
+                                <h2>Vendas recentes</h2>
+                                <p>Últimas vendas realizadas.</p>
+                            </div>
+
+                            <button class="text-button" data-go-page="historico">
+                                Ver todas
+                            </button>
+                        </div>
+
+                        <div id="dashboardRecentSales" class="panel-content"></div>
+                    </div>
+
+
+                    <div class="panel">
+                        <div class="panel-header">
+                            <div>
+                                <h2>Estoque baixo</h2>
+                                <p>Produtos que precisam de reposição.</p>
+                            </div>
+
+                            <button class="text-button" data-go-page="estoque">
+                                Ver estoque
+                            </button>
+                        </div>
+
+                        <div id="dashboardLowStock" class="panel-content"></div>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- VENDAS -->
+            <section id="page-vendas" class="page">
+
+                <div class="page-heading">
+                    <div>
+                        <h1>Vendas</h1>
+                        <p>Monte o carrinho e finalize a venda.</p>
+                    </div>
+                </div>
+
+                <div class="sales-layout">
+
+                    <div class="panel">
+
+                        <div class="panel-header">
+                            <div>
+                                <h2>Produtos</h2>
+                                <p>Pesquise por nome ou código.</p>
+                            </div>
+                        </div>
+
+                        <div class="sales-search">
+                            <input id="saleSearch" type="text" placeholder="Buscar produto...">
+                        </div>
+
+                        <div id="saleProducts" class="product-selection"></div>
+
+                        <button id="addOpenItem" class="btn btn-secondary btn-full">
+                            + Adicionar item avulso
+                        </button>
+
+                    </div>
+
+
+                    <div class="panel cart-panel">
+
+                        <div class="panel-header">
+                            <div>
+                                <h2>Carrinho</h2>
+                                <p id="cartCount">0 itens</p>
+                            </div>
+
+                            <button id="clearCart" class="text-button danger-text">
+                                Limpar
+                            </button>
+                        </div>
+
+                        <div id="cartItems" class="cart-items"></div>
+
+                        <div class="cart-summary">
+
+                            <div>
+                                <span>Subtotal</span>
+                                <strong id="cartSubtotal">R$ 0,00</strong>
+                            </div>
+
+                            <div class="discount-row">
+                                <label for="saleDiscount">Desconto</label>
+
+                                <input
+                                    id="saleDiscount"
+                                    type="number"
+                                    min="0"
+                                    step="0.01"
+                                    value="0"
+                                >
+                            </div>
+
+                            <div class="total-row">
+                                <span>Total</span>
+                                <strong id="cartTotal">R$ 0,00</strong>
+                            </div>
+
+                            <button id="openPayment" class="btn btn-primary btn-full">
+                                Ir para pagamento
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- PRODUTOS -->
+            <section id="page-produtos" class="page">
+
+                <div class="page-heading">
+                    <div>
+                        <h1>Produtos</h1>
+                        <p>Cadastre e gerencie seus produtos.</p>
+                    </div>
+
+                    <button id="newProductButton" class="btn btn-primary">
+                        + Novo produto
+                    </button>
+                </div>
+
+                <div class="panel">
+
+                    <div class="toolbar">
+                        <input
+                            id="productSearch"
+                            type="text"
+                            placeholder="Pesquisar por nome ou código..."
+                        >
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Produto</th>
+                                    <th>Código</th>
+                                    <th>Preço</th>
+                                    <th>Estoque</th>
+                                    <th>Mínimo</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="productsTable"></tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ESTOQUE -->
+            <section id="page-estoque" class="page">
+
+                <div class="page-heading">
+                    <div>
+                        <h1>Estoque</h1>
+                        <p>Controle entradas, saídas e ajustes.</p>
+                    </div>
+
+                    <button id="stockMovementButton" class="btn btn-primary">
+                        + Movimentação
+                    </button>
+                </div>
+
+                <div class="cards-grid stock-cards">
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span>Total de produtos</span>
+                            <b class="stat-icon">□</b>
+                        </div>
+                        <strong id="stockTotalProducts">0</strong>
+                        <small>Produtos cadastrados</small>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span>Itens em estoque</span>
+                            <b class="stat-icon">▤</b>
+                        </div>
+                        <strong id="stockTotalItems">0</strong>
+                        <small>Quantidade total</small>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span>Estoque baixo</span>
+                            <b class="stat-icon warning">!</b>
+                        </div>
+                        <strong id="stockLowProducts">0</strong>
+                        <small>Produtos abaixo do mínimo</small>
+                    </div>
+
+                </div>
+
+                <div class="panel">
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Produto</th>
+                                    <th>Código</th>
+                                    <th>Quantidade</th>
+                                    <th>Mínimo</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="stockTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </section>
+
+
+            <!-- CAIXA -->
+            <section id="page-caixa" class="page">
+
+                <div class="page-heading">
+                    <div>
+                        <h1>Caixa</h1>
+                        <p>Acompanhe a movimentação financeira.</p>
+                    </div>
+
+                    <div id="cashActions"></div>
+                </div>
+
+                <div class="cards-grid">
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span>Status</span>
+                            <b id="cashStatusIcon" class="stat-icon">●</b>
+                        </div>
+                        <strong id="cashStatus">Fechado</strong>
+                        <small id="cashOpenedAt">Nenhum caixa aberto</small>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span>Saldo atual</span>
+                            <b class="stat-icon red">R$</b>
+                        </div>
+                        <strong id="cashBalance">R$ 0,00</strong>
+                        <small>Valor disponível no caixa</small>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span>Entradas</span>
+                            <b class="stat-icon">+</b>
+                        </div>
+                        <strong id="cashIn">R$ 0,00</strong>
+                        <small>Movimentações de entrada</small>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span>Saídas</span>
+                            <b class="stat-icon warning">−</b>
+                        </div>
+                        <strong id="cashOut">R$ 0,00</strong>
+                        <small>Movimentações de saída</small>
+                    </div>
+
+                </div>
+
+                <div class="panel">
+                    <div class="panel-header">
+                        <div>
+                            <h2>Movimentações</h2>
+                            <p>Entradas, saídas e vendas.</p>
+                        </div>
+
+                        <button id="cashMovementButton" class="text-button">
+                            + Entrada / saída
+                        </button>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Descrição</th>
+                                    <th>Tipo</th>
+                                    <th>Valor</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="cashTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </section>
+
+
+            <!-- HISTÓRICO -->
+            <section id="page-historico" class="page">
+
+                <div class="page-heading">
+                    <div>
+                        <h1>Histórico de vendas</h1>
+                        <p>Consulte e gerencie as vendas realizadas.</p>
+                    </div>
+                </div>
+
+                <div class="panel">
+
+                    <div class="toolbar">
+                        <input
+                            id="historySearch"
+                            type="text"
+                            placeholder="Pesquisar venda..."
+                        >
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Venda</th>
+                                    <th>Data</th>
+                                    <th>Itens</th>
+                                    <th>Pagamento</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="historyTable"></tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- RELATÓRIOS -->
+            <section id="page-relatorios" class="page">
+
+                <div class="page-heading">
+                    <div>
+                        <h1>Relatórios</h1>
+                        <p>Resumo das vendas por período.</p>
+                    </div>
+                </div>
+
+                <div class="report-tabs">
+                    <button class="report-tab active" data-period="day">
+                        Hoje
+                    </button>
+
+                    <button class="report-tab" data-period="week">
+                        Semana
+                    </button>
+
+                    <button class="report-tab" data-period="month">
+                        Mês
+                    </button>
+                </div>
+
+                <div class="cards-grid">
+
+                    <div class="stat-card">
+                        <span class="stat-label">Total vendido</span>
+                        <strong id="reportSales">R$ 0,00</strong>
+                    </div>
+
+                    <div class="stat-card">
+                        <span class="stat-label">Vendas</span>
+                        <strong id="reportOrders">0</strong>
+                    </div>
+
+                    <div class="stat-card">
+                        <span class="stat-label">Ticket médio</span>
+                        <strong id="reportAverage">R$ 0,00</strong>
+                    </div>
+
+                </div>
+
+                <div class="panel">
+                    <div class="panel-header">
+                        <div>
+                            <h2>Resumo</h2>
+                            <p id="reportPeriodLabel">Período de hoje</p>
+                        </div>
+                    </div>
+
+                    <div id="reportContent" class="report-content"></div>
+                </div>
+
+            </section>
+
+
+            <!-- CONFIGURAÇÕES -->
+            <section id="page-configuracoes" class="page">
+
+                <div class="page-heading">
+                    <div>
+                        <h1>Configurações</h1>
+                        <p>Configure os dados da loja.</p>
+                    </div>
+                </div>
+
+                <div class="settings-grid">
+
+                    <div class="panel">
+
+                        <div class="panel-header">
+                            <div>
+                                <h2>Dados da loja</h2>
+                                <p>Essas informações aparecem no sistema.</p>
+                            </div>
+                        </div>
+
+                        <form id="storeForm" class="form-content">
+
+                            <div class="field">
+                                <label for="storeName">Nome da loja</label>
+                                <input id="storeName" type="text" placeholder="LM TECH">
+                            </div>
+
+                            <div class="field">
+                                <label for="storeDocument">CNPJ / CPF</label>
+                                <input id="storeDocument" type="text" placeholder="Opcional">
+                            </div>
+
+                            <div class="field">
+                                <label for="storePhone">Telefone</label>
+                                <input id="storePhone" type="text" placeholder="Opcional">
+                            </div>
+
+                            <button class="btn btn-primary" type="submit">
+                                Salvar configurações
+                            </button>
+
+                        </form>
+
+                    </div>
+
+
+                    <div class="panel">
+
+                        <div class="panel-header">
+                            <div>
+                                <h2>Usuário atual</h2>
+                                <p>Informações do acesso.</p>
+                            </div>
+                        </div>
+
+                        <div class="form-content">
+
+                            <div class="user-setting">
+                                <span>Usuário</span>
+                                <strong id="settingsUsername">admin</strong>
+                            </div>
+
+                            <div class="user-setting">
+                                <span>Nível</span>
+                                <strong>Administrador</strong>
+                            </div>
+
+                            <div class="user-setting">
+                                <span>Senha inicial</span>
+                                <strong>1234</strong>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+</div>
+
+
+<!-- MODAL -->
+<div id="modalOverlay" class="modal-overlay hidden">
+
+    <div id="modal" class="modal">
+
+        <div class="modal-header">
+            <h2 id="modalTitle">Modal</h2>
+
+            <button id="closeModal" class="modal-close" type="button">
+                ×
+            </button>
+        </div>
+
+        <div id="modalBody" class="modal-body"></div>
+
+    </div>
+
+</div>
+
+
+<div id="toastContainer" class="toast-container"></div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
