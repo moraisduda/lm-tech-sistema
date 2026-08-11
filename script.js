@@ -3879,3 +3879,14 @@ function initialize() {
 
 
 initialize();
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./service-worker.js")
+            .then(() => {
+                console.log("LM TECH: Service Worker ativo.");
+            })
+            .catch(error => {
+                console.error("LM TECH: erro ao ativar o Service Worker.", error);
+            });
+    });
+}

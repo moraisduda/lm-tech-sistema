@@ -1,0 +1,10 @@
+{
+  "name": "LM TECH",
+  "short_name": "LM TECH",
+  "description": "Sistema de gestão LM TECH",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0d0d0d",
+  "theme_color": "#e50914",
+  "orientation": "any"
+}
